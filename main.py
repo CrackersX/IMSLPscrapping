@@ -1,6 +1,21 @@
 from bs4 import BeautifulSoup
 import requests
 import re
+import imslp
+import mwclient
+from mwclient import Site
+
+lien= "https://imslp.org/index.php?title=Bol%C3%A9ro,_M.81_(Ravel,_Maurice)&action=edit"
+###NOT WORKING
+user_agent = 'Crackers'
+site = Site('en.imslp.org', clients_useragent=user_agent)
+
+
+cookies = {
+    "imslp_wikiLanguageSelectorLanguage": "en",
+    "imslpdisclaimeraccepted": "yes",
+}
+### END
 
 def imslp_getscore(link):
     result = requests.get(link)
@@ -39,9 +54,9 @@ def imslp_link_converter(file_links):
     return link2
 
 
-imslp_link_converter(("https://imslp.org/index.php?title=Consolations_and_Liebestr%C3%A4ume_for_the_Piano_(Liszt,_Franz)&action=edit"))
-
-
+imslp_link_converter(lien)
+#(+ ajouter redirect)
+###NOT WORKING
 
 def downloadsheet(image_url):
     response = requests.get(image_url)
@@ -49,3 +64,4 @@ def downloadsheet(image_url):
     with open("myfile.pdf", "wb") as pdf_file:
         pdf_file.write(response.content)
     return
+###END
