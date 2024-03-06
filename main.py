@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import re
-import urllib.request
+
 
 def imslpdownload(link):
     L=[]
@@ -78,9 +78,36 @@ def getlastlink(file_links):
     linkfinal="https://imslp.org/"+image_links[0]
     print(linkfinal)
 
+
     return linkfinal
 
 getlastlink(imslptruelink(imslpgetcode("https://imslp.org/index.php?title=Bol%C3%A9ro,_M.81_(Ravel,_Maurice)&action=edit")))
+
+def getlastlink2(file_links):
+    # URL de la page que vous souhaitez analyser
+    url = file_links
+
+    # Obtenir le contenu de la page
+    response = requests.get(url)
+    html_content = response.text
+
+    # Utiliser BeautifulSoup pour analyser le HTML
+    soup = BeautifulSoup(html_content, "html.parser")
+
+    # Trouver tous les liens dans la page
+    all_links = soup.find_all("a", href=True)
+
+    # Filtrer les liens qui commencent par "/images/"
+    image_links = [link['href'] for link in all_links if link['href'].startswith("/files/")]
+    print(image_links)
+    # Afficher les liens trouvés
+    linkfinal="https://imslp.org/"
+    print(linkfinal)
+    
+
+    return linkfinal
+
+getlastlink2(getlastlink(imslptruelink(imslpgetcode("https://imslp.org/index.php?title=Bol%C3%A9ro,_M.81_(Ravel,_Maurice)&action=edit"))))
 
 def downloadsheet(image_url):
     response = requests.get(image_url)
@@ -89,4 +116,4 @@ def downloadsheet(image_url):
         pdf_file.write(response.content)
     return
 
-downloadsheet(getlastlink(imslptruelink(imslpgetcode("https://imslp.org/index.php?title=Bol%C3%A9ro,_M.81_(Ravel,_Maurice)&action=edit"))))
+downloadsheet(getlastlink2(getlastlink(imslptruelink(imslpgetcode("https://imslp.org/index.php?title=Bol%C3%A9ro,_M.81_(Ravel,_Maurice)&action=edit")))))
